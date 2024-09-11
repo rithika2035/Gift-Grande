@@ -1,4 +1,4 @@
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import React, { useContext, useState } from "react";
 import { MdClose, MdMenu } from "react-icons/md";
@@ -12,14 +12,18 @@ import logout from "../assets/logout.svg"
 import user from "../assets/user.svg"
 import { ShopContext } from "../Context/ShopContext";
 
-const Header = () => {
+const Header = ({setShowLogin}) => {
     
     const [menuOpened, setMenuOpened ]= useState(false); 
     const toggleMenu = () => setMenuOpened(!menuOpened);
     const {getTotalCartItems, token, setToken} = useContext(ShopContext);
     const navigate = useNavigate()
 
-    
+    const logout = ()=> {
+      localStorage.removeItem("token");
+      setToken("");
+      window.location.replace("/");
+    }
 
   return (
     <header className="fixed top-0 left-0 m-auto w-full bg-white ring-1 ring-slate-900/5 z-10">
@@ -49,12 +53,12 @@ const Header = () => {
           rounded-full" onClick={toggleMenu}/>)}
 
           <div className="flexBetween gap-x-2 sm:gap-x-5">
-            <NavLink to={"/cart"} className={"flex"}>
+            <button onClick={()=>navigate('/cart')} className={"flex"}>
             <FaOpencart className="p-1 h-8 w-8 ring-slate-900/30 ring-1 rounded-full"/>
             <span className="relative flexCenter w-5 h-5 rounded-full bg-black text-white medium-14 -top-2">{getTotalCartItems()}</span>
-            </NavLink>
+            </button>
 
-            {!localStorage.getItem('auth-token')?<NavLink to={'login'} className={"btn_secondary_rounded flexCenter gap-x-2 medium-16"}><img src={user} alt="login Icon" height={19} width={19}/>Login</NavLink>
+            {!token?(<button onClick={()=>navigate('/login')} className={"btn_secondary_rounded flexCenter gap-x-2 medium-16"}><img src={user} alt="login Icon" height={19} width={19}/>Login</button>)
              : ( 
               <div className="group relative">
                 <FaCircleUser className="text-4xl"/>
@@ -64,10 +68,10 @@ const Header = () => {
                     <p>Order</p>
                   </li>
                   <hr className="my-2"/>
-                  <NavLink onClick={()=>{localStorage.removeItem('auth-token'); window.location.replace("/")}} to={'logout'} className="flexCenter gap-x-2 cursor-pointer">
+                  <li onClick={logout} className="flexCenter gap-x-2 cursor-pointer">
                     <TbLogout className="text-[22px]" />
                     <p>Logout</p>
-                  </NavLink>
+                  </li>
                 </ul>
               </div>              
             )}            

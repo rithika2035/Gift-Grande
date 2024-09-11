@@ -12,12 +12,15 @@ import Footer from "./components/Footer";
 // import images
 import bannerproduct from "./assets/bannerproduct.png"
 import CartItems from "./components/CartItems";
+import { useState } from "react";
 
 
 export default function App() {
+  // const [showLogin, setShowLogin] = useState(false)
   return (
     <main className="bg-primary text-tertiary">
       <BrowserRouter>
+        {/* {showLogin ? <Login setShowLogin={setShowLogin} />:<></>} */}
         <Header />
         <Routes>
           <Route  path="/" element={<Home />}/>
