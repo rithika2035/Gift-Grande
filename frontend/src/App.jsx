@@ -7,7 +7,7 @@ import Product from "./pages/Product";
 import Login from "./pages/Login";
 import MyOrders from "./pages/MyOrders";
 import Verify from "./pages/Verify";
-import Order from "./components/Order";
+import Order from "./pages/Order";
 import Footer from "./components/Footer";
 // import images
 import bannerproduct from "./assets/bannerproduct.png"
