@@ -3,10 +3,11 @@ import all_products from "../assets/all_products";
 import React, { useContext } from "react";
 import { ShopContext } from "../Context/ShopContext";
 import { useNavigate } from "react-router-dom";
+import { FaHeart } from "react-icons/fa"
 
 const ProductDisplay = (props) => {
   const { product } = props;
-  const { addToCart ,url } = useContext(ShopContext);
+  const { addToCart ,url, addToList } = useContext(ShopContext);
 
   return (
     <section>
@@ -29,6 +30,9 @@ const ProductDisplay = (props) => {
           </div>
           <div className="flex gap-x-6 medium-20 my-4">
             <div className="text-secondary">₹ {product.price}.00</div>
+            <button onClick= {() => {addToList(product._id)}} className="btn_dark_outline !rounded-none uppercase regular-14 tracking-widest">
+                <FaHeart></FaHeart>
+              </button>
           </div>
           <div className="mb-4">
             <div className="flex flex-col gap-y-3 mb-4 max-w-[555px]">

@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import React, { useContext, useState } from "react";
 import { MdClose, MdMenu } from "react-icons/md";
-import { FaOpencart } from "react-icons/fa";
+import { FaHeart, FaOpencart } from "react-icons/fa";
 import { FaCircleUser } from "react-icons/fa6";
 import { FiPackage } from "react-icons/fi";
 import { TbLogout } from "react-icons/tb"
@@ -16,7 +16,7 @@ const Header = ({setShowLogin}) => {
     
     const [menuOpened, setMenuOpened ]= useState(false); 
     const toggleMenu = () => setMenuOpened(!menuOpened);
-    const {getTotalCartItems, token, setToken} = useContext(ShopContext);
+    const {getTotalCartItems, token, setToken, getTotalListItems} = useContext(ShopContext);
     const navigate = useNavigate()
 
     const logout = ()=> {
@@ -53,6 +53,11 @@ const Header = ({setShowLogin}) => {
           rounded-full" onClick={toggleMenu}/>)}
 
           <div className="flexBetween gap-x-2 sm:gap-x-5">
+          <button onClick={()=>navigate('/wishlist')} className={"flex"}>
+            <FaHeart className="p-1 h-8 w-8 ring-slate-900/30 ring-1 rounded-full"/>
+            <span className="relative flexCenter w-5 h-5 rounded-full bg-black text-white medium-14 -top-2">{getTotalListItems()}</span>
+            </button>
+
             <button onClick={()=>navigate('/cart')} className={"flex"}>
             <FaOpencart className="p-1 h-8 w-8 ring-slate-900/30 ring-1 rounded-full"/>
             <span className="relative flexCenter w-5 h-5 rounded-full bg-black text-white medium-14 -top-2">{getTotalCartItems()}</span>

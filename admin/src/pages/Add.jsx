@@ -18,11 +18,7 @@ const Add = ({url}) => {
         const name = e.target.name;
         const value = e.target.value;
         setData((data) => ({...data, [name]: value }));
-    };
-
-    /*useEffect(()=>{
-        console.log(data)
-    },[data])*/
+    };    
 
     const onSubmitHandler = async (event)=>{
         event.preventDefault();

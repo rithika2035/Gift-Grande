@@ -5,6 +5,7 @@ export const ShopContext = createContext(null);
 
 const ShopContextProvider = (props) => {
     const [cartItems, setCartItems] = useState({});
+    const [listItems, setListItems] = useState({});
     const url = "http://localhost:4000";
     const [token, setToken] = useState("");
     const [all_products, setAll_products] = useState([]);
@@ -21,13 +22,45 @@ const ShopContextProvider = (props) => {
             await axios.post(url+"/api/cart/add",{itemId},{headers:{token}})
         }      
     };
-    
+
     const removeFromCart = async (itemId) => {
         setCartItems((prev) => ({...prev, [itemId]:prev[itemId]-1}));
         if(token){
             await axios.post(url+"/api/cart/remove",{itemId},{headers:{token}})
         } 
         
+    }
+
+    const addToList = async (itemId) => {
+        if (!listItems[itemId]){
+            setListItems((prev) => ({...prev,[itemId]: 1}));
+        } else {
+            setListItems((prev) => ({...prev, [itemId]:prev[itemId]+1}))
+        }
+        if(token){
+            await axios.post(url+"/api/list/add",{itemId},{headers:{token}})
+        }      
+    };    
+
+    const removeFromList = async (itemId) => {
+        setListItems((prev) => ({...prev, [itemId]:prev[itemId]-1}));
+        if(token){
+            await axios.post(url+"/api/list/remove",{itemId},{headers:{token}})
+        } 
+        
+    }
+    const getTotalListItems = () => {
+        let totalItems = 0;
+        for (const item in listItems) {
+            if (listItems[item] > 0) {
+                totalItems += listItems[item];
+            }
+        }
+        return totalItems;
+    }
+    const loadListData = async (token) =>{
+        const response = await axios.post(url+"/api/list/get",{},{headers:{token}})
+        setListItems(response.data.listData)
     }
 
     const getTotalCartAmount = () => {
@@ -51,6 +84,8 @@ const ShopContextProvider = (props) => {
         return totalItems;
     }
 
+    
+
     const fetchProductList = async () => {
         const response = await axios.get(url+"/api/product/list");
         setAll_products(response.data.data)
@@ -63,12 +98,15 @@ const ShopContextProvider = (props) => {
         setCartItems(response.data.cartData)
     }
 
+    
+
     useEffect(() =>{
         async function loadData() {
             await fetchProductList();
             if (localStorage.getItem("token")){
                 setToken(localStorage.getItem("token"));
                 await loadCartData(localStorage.getItem("token"))
+                await loadListData(localStorage.getItem("token"))
             }
         }
         loadData()
@@ -81,12 +119,17 @@ const ShopContextProvider = (props) => {
         all_products,
         LATEST,
         POPULAR,
-        cartItems, 
+        cartItems,
+        listItems, 
         addToCart, 
-        removeFromCart, 
+        removeFromCart,
         url,
         token,
         setToken,
+        setListItems,
+        getTotalListItems,
+        addToList,
+        removeFromList,
     };
     return (
         <ShopContext.Provider value={contextValue}>

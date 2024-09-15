@@ -27,9 +27,6 @@ const Category = ({category, banner}) => {
             }
           })}
         </div>
-        <div className="mt-16 text-center">
-          <button className="btn_dark_rounded"> Load more</button>
-        </div>
       </div>      
     </section>
   )

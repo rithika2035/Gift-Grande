@@ -9,6 +9,7 @@ import MyOrders from "./pages/MyOrders";
 import Verify from "./pages/Verify";
 import Order from "./pages/Order";
 import Footer from "./components/Footer";
+import Wishlist from "./pages/Wishlist"
 // import images
 import bannerproduct from "./assets/bannerproduct.png"
 import CartItems from "./components/CartItems";
@@ -33,6 +34,7 @@ export default function App() {
           <Route  path="/verify" element={<Verify />}/>
           <Route  path="/myorders" element={<MyOrders />}/>
           <Route  path="/login" element={<Login />}/>
+          <Route  path="/wishlist" element={<Wishlist />}/>
         </Routes>
         <Footer />
       </BrowserRouter>
