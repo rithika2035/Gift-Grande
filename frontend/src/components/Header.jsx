@@ -7,7 +7,7 @@ import { FaCircleUser } from "react-icons/fa6";
 import { FiPackage } from "react-icons/fi";
 import { TbLogout } from "react-icons/tb"
 //import images 
-import logo from "../assets/logo.svg"
+import logo from "../assets/logo.png"
 import logout from "../assets/logout.svg"
 import user from "../assets/user.svg"
 import { ShopContext } from "../Context/ShopContext";
@@ -31,7 +31,7 @@ const Header = ({setShowLogin}) => {
 
         {/*logo*/}
         <div>
-          <Link><img src={logo} alt="" height={66} width={88} /></Link>
+          <Link><img src={logo} alt="" height={66} width={88} className="rounded-full"/></Link>
         </div>
 
         {/* Navbar Desktop*/}

@@ -7,21 +7,23 @@ import Orders from "./pages/Orders"
 import Login from "./pages/Login"
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Layout from "./components/Layout"
 
-export default function App() {
+export default function Home() {
   const url = "http://localhost:4000";
-  
   return (
     <BrowserRouter>
     <ToastContainer/>
+      {/* <Navbar />
+      <hr/>
+      <div className="flex">
+        <Sidebar /> */}
         <Routes>
           <Route path="/" element={<Login url={url}/>}/>
-          <Route path="/add" element={<Layout><Add url={url}/></Layout>}/>
-          <Route path="/list" element={<Layout><List url={url}/></Layout>}/>
-          <Route path="/orders" element={<Layout><Orders url={url}/></Layout>}/>
+          <Route path="/add" element={<Add url={url}/>}/>
+          <Route path="/list" element={<List url={url}/>}/>
+          <Route path="/orders" element={<Orders url={url}/>}/>
         </Routes>
+      {/* </div> */}
     </BrowserRouter>
   )
 }
-

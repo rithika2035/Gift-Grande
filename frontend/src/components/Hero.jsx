@@ -1,7 +1,7 @@
 import { MdOutlineLocalOffer} from 'react-icons/md'
 import { FaStar } from "react-icons/fa"
 import { NavLink } from 'react-router-dom'
-const Hero = () => {
+const Hero = () => {    
   return (
     <section className='relative bg-hero bg-cover bg-center bg-no-repeat h-screen w-full'>
         <div className='max_padd_container relative top-32 xs:top-52'>
@@ -25,8 +25,7 @@ const Hero = () => {
                 <div className='bold-16 sm:bold-20'>1k <span className='regular-16 sm:regular-20'> Excellent Reviews</span></div>
             </div>
             <div className='max-xs:flex-col flex gap-2'>
-                <NavLink to={''} className={"btn_dark_rounded flexCenter"}>Shop now</NavLink>
-                <NavLink to={''} className={"btn_dark_rounded flexCenter gap-x-2"}><MdOutlineLocalOffer className='text-2xl'/>Offer</NavLink>
+                <NavLink to={'/product'} className={"btn_dark_rounded flexCenter"}>Shop now</NavLink>
             </div>
         </div>
     </section>

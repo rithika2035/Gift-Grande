@@ -22,7 +22,8 @@ const MyOrders = () => {
   return (
     <section className="max_padd_container pt-20">
       <div className="py-10">
-        <h4 className="bold-24">My Orders</h4>
+        <h1 className=" h3 p-1 text-center text-black ">My Orders</h1>
+        <hr className='h-[3px] md:w-1/2 mx-auto bg-gradient-to-l from-transparent via-black to-transparent mb-16'/>
         <table className="w-full mt-8">
           <thead>
             <tr className="border-b border-r-slate-900/20 text-black regular-14 xs:regular-16 text-start py-12">

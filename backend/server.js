@@ -7,6 +7,7 @@ import userRouter from "./routes/userRoute.js"
 import cartRouter from "./routes/cartRoute.js"
 import orderRouter from "./routes/orderRoute.js"
 import listRouter from "./routes/listRouter.js"
+import adminRouter from "./routes/adminRoute.js"
 
 //app config
 const app = express();
@@ -26,6 +27,7 @@ app.use("/api/user",userRouter)
 app.use("/api/cart",cartRouter)
 app.use("/api/list",listRouter)
 app.use("/api/order",orderRouter)
+app.use("/api/admin",adminRouter)
 
 //Api creation
 app.get('/',(req,res) => {

@@ -34,9 +34,7 @@ const ShopContextProvider = (props) => {
     const addToList = async (itemId) => {
         if (!listItems[itemId]){
             setListItems((prev) => ({...prev,[itemId]: 1}));
-        } else {
-            setListItems((prev) => ({...prev, [itemId]:prev[itemId]+1}))
-        }
+        } 
         if(token){
             await axios.post(url+"/api/list/add",{itemId},{headers:{token}})
         }      

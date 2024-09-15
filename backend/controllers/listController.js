@@ -7,8 +7,6 @@ const addToList =  async(req, res) => {
         let listData = await userData.listData;
         if(!listData[req.body.itemId]){
             listData[req.body.itemId] = 1
-        }else{
-            listData[req.body.itemId] +=1
         }
         await userModel.findByIdAndUpdate(req.body.userId,{listData});
         res.json({success:true,message:"Added to Wishilist"})
