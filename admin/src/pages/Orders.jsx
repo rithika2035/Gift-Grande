@@ -1,12 +1,16 @@
 import React from 'react'
 import { useState } from 'react'
 import axios from "axios"
-import { useEffect } from 'react'
+import { useEffect,  useRef } from 'react'
 import { FaBox } from "react-icons/fa"
+import { Link } from 'react-router-dom';
+import { useReactToPrint } from 'react-to-print';
 
 const Orders = ({url}) => {
 
   const [orders, setOrders] = useState([])
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const printRef = useRef(); // Reference for printing
 
   const fetchAllOrders = async()=>{
     const response = await axios.get(url+"/api/order/list");
@@ -29,6 +33,21 @@ const Orders = ({url}) => {
 useEffect(()=>{
   fetchAllOrders()
 },[])
+
+  // Handle the "Details" button click
+  const handlePrint = (order) => {
+    setSelectedOrder(order); // Store selected order
+    setTimeout(() => {
+      handlePrintTrigger(); // Trigger print after order is selected
+    }, 500); // Slight delay to allow state update
+  };
+
+  // Function to trigger print
+  const handlePrintTrigger = useReactToPrint({
+    content: () => printRef.current,
+    documentTitle: `Order_${selectedOrder?._id}`, // Name for the print file
+  });
+
   return (
     <section className='p-4 sm:p-10 box-border w-full'>
       <h4 className='bold-22 uppercase'>Order Page</h4>
@@ -77,11 +96,42 @@ useEffect(()=>{
                     <option value="Delivered">Delivered</option>
                   </select>
                 </td>
+                <td className='p-1'>                   
+                   <button onClick={() => handlePrint(order)} className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded'>
+                    Print Details
+                   </button>                  
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+      {/* Hidden Printable Component */}
+      {selectedOrder && (
+        <div style={{ display: 'none' }}>
+          <div ref={printRef}>
+            <h4>Order Details: {selectedOrder._id}</h4>
+            <p><strong>Name:</strong> {selectedOrder.address.firstName} {selectedOrder.address.lastName}</p>
+            <p><strong>Phone:</strong> {selectedOrder.address.phone}</p>
+            <p><strong>Address:</strong> {`${selectedOrder.address.street}, ${selectedOrder.address.city}, ${selectedOrder.address.state}, ${selectedOrder.address.country}, ${selectedOrder.address.zipcode}`}</p>
+            <p><strong>Order Date:</strong> {new Date(selectedOrder.date).toLocaleDateString()}</p>
+            <p><strong>Payment Status:</strong> {selectedOrder.payment ? "Paid" : "Not Paid"}</p>
+
+            <h5>Items:</h5>
+            <ul>
+              {selectedOrder.items.map((item, index) => (
+                <li key={index}>
+                  <p><strong>Product:</strong> {item.name}</p>
+                  <p><strong>Quantity:</strong> {item.quantity}</p>
+                  <p><strong>Price:</strong> ₹{item.price}</p>
+                  <p><strong>Total:</strong> ₹{item.price * item.quantity}</p>
+                </li>
+              ))}
+            </ul>
+            <p><strong>Total Amount:</strong> ₹{selectedOrder.amount}</p>
+          </div>
+        </div>
+      )}
     </section>
   )
 }

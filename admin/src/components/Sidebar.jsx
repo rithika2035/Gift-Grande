@@ -1,6 +1,6 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import {BsPlusSquare, BsCardList, BsCardChecklist} from "react-icons/bs"
+import {BsPlusSquare, BsCardList, BsCardChecklist, BsBarChartFill} from "react-icons/bs"
 
 const Sidebar = () => {
   return (
@@ -18,6 +18,13 @@ const Sidebar = () => {
         <BsCardChecklist />
         <p className='hidden lg:flex'>Orders</p>
         </NavLink>
+        <div 
+          className='flexCenter gap-x-2 cursor-pointer h-10 max-w-60 border border-slate-900/15 !bg-transparent'
+          onClick={() => window.open('https://dashboard.stripe.com/test/payments', '_blank')}
+        >
+          <BsBarChartFill />
+          <p className='hidden lg:flex'>Payment History</p>
+        </div>
       </div>
     </div>
   )
