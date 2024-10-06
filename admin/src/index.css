@@ -44,6 +44,87 @@ html{
   grid-template-columns: 0.5fr 3fr 1fr 1fr 1fr 1fr;
   align-items: center
 }
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it appears on top */
+}
+
+/* Modal Container */
+.modal {
+  background: white; /* Background color */
+  padding: 20px;
+  border-radius: 8px; /* Rounded corners */
+  width: 400px; /* Set a width */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Shadow effect */
+}
+
+/* Modal Title */
+.modal-title {
+  font-size: 20px; /* Title size */
+  margin-bottom: 15px; /* Spacing below title */
+}
+
+/* Modal Body */
+.modal-body {
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+}
+
+/* Form Group */
+.form-group {
+  margin-bottom: 15px; /* Spacing between form groups */
+}
+
+/* Form Label */
+.form-group label {
+  font-weight: bold; /* Make label bold */
+  margin-bottom: 5px; /* Spacing below label */
+}
+
+/* Form Input */
+.form-input {
+  padding: 10px; /* Padding inside input */
+  border: 1px solid #ccc; /* Border color */
+  border-radius: 4px; /* Rounded corners */
+  width: 100%; /* Full width */
+  box-sizing: border-box; /* Include padding and border in element's total width and height */
+}
+
+/* Modal Footer */
+.modal-footer {
+  display: flex;
+  justify-content: space-between; /* Space between buttons */
+}
+
+/* Buttons */
+.btn {
+  padding: 10px 15px; /* Padding for buttons */
+  background-color: #007bff; /* Button background color */
+  color: white; /* Text color */
+  border: none; /* No border */
+  border-radius: 4px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor on hover */
+}
+
+/* Cancel Button */
+.btn.cancel {
+  background-color: #dc3545; /* Red color for cancel button */
+}
+
+/* Button Hover Effects */
+.btn:hover {
+  opacity: 0.9; /* Slightly transparent on hover */
+}
+
 @layer base {
   
   .active-link{

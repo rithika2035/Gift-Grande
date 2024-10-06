@@ -6,12 +6,25 @@ import fs from "fs"
 const addProduct = async (req, res) =>{
   let image_filename= `${req.file.filename}`;
 
+  // Ensure quantity is greater than or equal to 20
+  const quantity = Number(req.body.quantity);
+  if (isNaN(quantity) || quantity < 20) {
+    return res.json({ success: false, message: "Product quantity must be greater than or equal to 20." });
+  }
+
+  // Check if product already exists
+  const existingProduct = await productModel.findOne({ name: req.body.name });
+  if (existingProduct) {
+    return res.json({ success: false, message: "Product already exists." });
+  }
+
   const product = new productModel({
     name: req.body.name,
     description: req.body.description,
     price: req.body.price,
     category: req.body.category,
     image: image_filename,
+    quantity: quantity 
   });
 
   try {
@@ -31,7 +44,7 @@ const listProduct = async(req,res)=> {
 
   } catch (error) {
     console.log(error)
-    res.json({success:false,message:"Error"})
+    res.json({success:false,message:"Error retrieving products"})
     
   }
 }
@@ -50,6 +63,26 @@ const removeProduct = async (req, res)=> {
   }
 }
 
-export {addProduct, listProduct, removeProduct};
+// Update product details
+const updateProduct = async (req, res) => {
+  try {
+    const { id, name, price, quantity } = req.body;
 
-//4:28:22
+    const updatedProduct = await productModel.findByIdAndUpdate(
+      id,
+      { name, price, quantity },
+      { new: true } // Return the updated document
+    );
+
+    if (updatedProduct) {
+      res.json({ success: true, message: "Product updated successfully." });
+    } else {
+      res.json({ success: false, message: "Product not found." });
+    }
+  } catch (error) {
+    console.error(error);
+    res.json({ success: false, message: "Error updating product." });
+  }
+};
+
+export {addProduct, listProduct, removeProduct, updateProduct};

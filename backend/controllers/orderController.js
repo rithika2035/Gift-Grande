@@ -1,5 +1,6 @@
 import orderModel from "../models/orderModel.js";
 import userModel from "../models/userModel.js";
+import productModel from "../models/productModel.js";
 import { Stripe } from "stripe";
 
 
@@ -58,6 +59,18 @@ const verifyOrder = async (req,res) =>{
     try {
         if (success=="true") {
             await orderModel.findByIdAndUpdate(orderId,{payment:true});
+            // Fetch the order to get items and their quantities
+            const order = await orderModel.findById(orderId);
+            const items = order.items; // Assuming items are stored in the order document
+
+            // Reduce product quantities in the database
+            for (const item of items) {
+                if (item.quantity && item._id) {
+                    await productModel.findByIdAndUpdate(item._id, {
+                        $inc: { quantity: -item.quantity },
+                    });
+                }
+            }
             res.json({success:true,message:"Paid"})
         }else{
             await orderModel.findByIdAndDelete(orderId)

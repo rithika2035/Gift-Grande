@@ -14,6 +14,7 @@ const Add = ({url}) => {
         description: "",
         price: "",
         category: "product",
+        quantity: 20 
     });
     const [products, setProducts] = useState([]);
 
@@ -58,12 +59,18 @@ const Add = ({url}) => {
             return;
         }
 
+        if (Number(data.quantity) < 20) {
+            toast.error("Product quantity must be more than 20.");
+            return;
+        }
+
         const formData = new FormData();
         formData.append("name", data.name);
         formData.append("description", data.description); 
         formData.append("price", Number(data.price));
-        formData.append("category", data.category);
+        formData.append("category", data.category);        
         formData.append("image", image);
+        formData.append("quantity", Number(data.quantity));
         try {
             const response = await axios.post(`${url}/api/product/add`, formData);
             if (response.data.success){
@@ -72,11 +79,12 @@ const Add = ({url}) => {
                 description:"",
                 price:"",
                 category:"product",
+                quantity: ""
             });
             setImage(false);
             toast.success(response.data.message)
             // Update product list after successful submission
-            setProducts([...products, { name: data.name, price: data.price }]);
+            setProducts([...products, { name: data.name, price: data.price, quantity: data.quantity }]);
         } else {
             toast.error(response.data.message || "Failed to add product.");
         }
@@ -116,6 +124,10 @@ const Add = ({url}) => {
                 <div className='flex flex-col gap-y-2'>
                     <p>Product Price</p>
                     <input onChange={onChangeHandler} value={data.price} name='price' type="number" placeholder='₹'  className='ring-1 ring-slate-900/10 pl-2 w-24 outline-none'/>
+                </div>
+                <div className='flex flex-col gap-y-2'>
+                    <p>Product Quantity</p>
+                    <input onChange={onChangeHandler} value={data.quantity} name='quantity' type="number" placeholder='Quantity' className='ring-1 ring-slate-900/10 pl-2 w-24 outline-none' required/>
                 </div>
             </div>
             <button type='submit' className='btn-dark sm:w-5/12 flexCenter gap-x-2 !py-2 rounded'>

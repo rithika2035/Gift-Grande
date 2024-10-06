@@ -5,6 +5,8 @@ import ProductHd from "../components/ProductHd";
 import ProductDisplay from "../components/ProductDisplay";
 import ProductDescription from "../components/ProductDescription";
 import RelatedProducts from "../components/RelatedProducts";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Product = () => {
 
@@ -21,6 +23,7 @@ const Product = () => {
   return (
     <section className="p-20 py-28">
       <div>
+        <ToastContainer />
         <ProductHd  product={product}/>
         <ProductDisplay product={product}/>
         <ProductDescription product={product}/>

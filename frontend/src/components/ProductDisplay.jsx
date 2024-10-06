@@ -4,11 +4,22 @@ import React, { useContext } from "react";
 import { ShopContext } from "../Context/ShopContext";
 import { useNavigate } from "react-router-dom";
 import { FaHeart } from "react-icons/fa"
+import { toast } from "react-toastify";
 
 const ProductDisplay = (props) => {
   const { product } = props;
-  const { addToCart ,url, addToList } = useContext(ShopContext);
+  const { addToCart, cartItems ,url, addToList } = useContext(ShopContext);
 
+  const handleAddToCart = () => {
+    const currentQtyInCart = cartItems[product._id] || 0;
+    if (product.quantity <= 0) {
+      toast.error("Product is out of stock.");
+    } else if (currentQtyInCart >= product.quantity) {
+      toast.error(`No more product available. You reached the maximum quantity of available.`);
+    } else {
+      addToCart(product._id);
+    }
+  };
   return (
     <section>
       <div className="flex flex-col gap-14 xl:flex-row">
@@ -36,10 +47,10 @@ const ProductDisplay = (props) => {
           </div>
           <div className="mb-4">
             <div className="flex flex-col gap-y-3 mb-4 max-w-[555px]">
-              <button onClick= {() => {addToCart(product._id)}} className="btn_dark_outline !rounded-none uppercase regular-14 tracking-widest">
+              <button onClick={handleAddToCart} className="btn_dark_outline !rounded-none uppercase regular-14 tracking-widest">
                 ADD TO CART
               </button>
-              <button onClick= {() => {addToCart(product._id)}} className="btn_dark_rounded !rounded-none uppercase regular-14 tracking-widest">
+              <button onClick= {handleAddToCart} className="btn_dark_rounded !rounded-none uppercase regular-14 tracking-widest">
                 BUY IT NOW
               </button>
             </div>

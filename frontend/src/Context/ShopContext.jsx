@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from "react";
 import axios from "axios"
+import { toast } from "react-toastify";
 
 export const ShopContext = createContext(null);
 
@@ -13,23 +14,49 @@ const ShopContextProvider = (props) => {
     const [POPULAR, setPOPULAR]= useState([])
     
     const addToCart = async (itemId) => {
-        if (!cartItems[itemId]){
-            setCartItems((prev) => ({...prev,[itemId]: 1}));
+        const product = all_products.find((product) => product._id === itemId);        
+        // Check if the product exists and has quantity greater than 0
+        if (product && product.quantity > 0) {
+            if (!cartItems[itemId]) {
+                setCartItems((prev) => ({ ...prev, [itemId]: 1 }));
+            } else {
+                // Check if current cart quantity plus 1 exceeds the available stock
+                if (cartItems[itemId] < product.quantity) {
+                    setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
+                } else {
+                    toast.error(`No more product available. You reached the maximum quantity of available.`);
+                    return;
+                }
+            }
+            
+            if (token) {
+                await axios.post(url + "/api/cart/add", { itemId }, { headers: { token } });
+            }
         } else {
-            setCartItems((prev) => ({...prev, [itemId]:prev[itemId]+1}))
+            alert("Product is out of stock.");
         }
-        if(token){
-            await axios.post(url+"/api/cart/add",{itemId},{headers:{token}})
-        }      
     };
 
-    const removeFromCart = async (itemId) => {
-        setCartItems((prev) => ({...prev, [itemId]:prev[itemId]-1}));
-        if(token){
-            await axios.post(url+"/api/cart/remove",{itemId},{headers:{token}})
-        } 
-        
-    }
+    const removeFromCart = async (itemId, removeAll = false) => {
+        setCartItems((prev) => {
+            const currentQty = prev[itemId];
+            if (removeAll || currentQty === 1) {
+                const newCart = { ...prev };
+                delete newCart[itemId];
+                return newCart;
+            } else {
+                return { ...prev, [itemId]: currentQty - 1 };
+            }
+        });
+    
+        if (token) {
+            if (removeAll || cartItems[itemId] === 1) {
+                await axios.post(url + "/api/cart/removeAll", { itemId }, { headers: { token } });
+            } else {
+                await axios.post(url + "/api/cart/remove", { itemId }, { headers: { token } });
+            }
+        }
+    };
 
     const addToList = async (itemId) => {
         if (!listItems[itemId]){

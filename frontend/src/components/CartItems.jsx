@@ -2,11 +2,20 @@ import React, { useContext } from 'react'
 import { ShopContext } from '../Context/ShopContext'
 import {TbTrash} from "react-icons/tb"
 import { useNavigate } from "react-router-dom"
+import { toast } from "react-toastify";
 
 const CartItems = () => {
 
     const navigate = useNavigate();
-    const{getTotalCartAmount, all_products, cartItems, removeFromCart, url} = useContext(ShopContext);
+    const{getTotalCartAmount, all_products, cartItems, addToCart, removeFromCart, url} = useContext(ShopContext);
+
+    const handleAddToCartInCart = (product) => {
+        if (cartItems[product._id] < product.quantity) {
+          addToCart(product._id);
+        } else {
+          toast.error(`No more product available. You reached the maximum quantity of available.`);
+        }
+    };
 
     return (
         <section className='p-20 mt-10 pt-28'>
@@ -17,7 +26,7 @@ const CartItems = () => {
                         <th className='p-1 py-2'>Product</th>
                         <th className='p-1 py-2'>Title</th>
                         <th className='p-1 py-2'>Price</th>
-                        <th className='p-1 py-2'>Quantity</th>
+                        <th className='p-1 py-2 w-32'>Quantity</th>
                         <th className='p-1 py-2'>Total</th>
                         <th className='p-1 py-2'>Remove</th>
                     </tr>                   
@@ -29,7 +38,11 @@ const CartItems = () => {
                                 <td className='flexCenter'><img src={url+"/images/"+product.image} alt="prdctImg" height={43} width={43} className='rounded-lg rign-1 ring-slate-900/5 my-1'/></td>
                                 <td><div className='line-clamp-3'>{product.name}</div></td>
                                 <td>₹ {product.price}.00</td>
-                                <td className='w-16 h-16 bg-white'>{cartItems[product._id]}</td>
+                                <td className='w-32 px-2 h-16 bg-white flex justify-center items-center '>
+                                    <button onClick={() => removeFromCart(product._id)} className='px-2 bg-black text-white'>-</button>
+                                    <div className='px-4'>{cartItems[product._id]}</div>
+                                    <button onClick={() => handleAddToCartInCart(product)} className='px-2 bg-black text-white'>+</button>               
+                                </td>
                                 <td>₹ {product.price * cartItems[product._id]}</td>
                                 <td>
                                     <div className='bold-22 pl-14 '><TbTrash onClick={()=> removeFromCart(product._id)}/></div>
