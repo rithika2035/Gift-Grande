@@ -4,7 +4,7 @@ import axios from "axios"
 import { useEffect,  useRef } from 'react'
 import { FaBox } from "react-icons/fa"
 import { Link } from 'react-router-dom';
-import { useReactToPrint } from 'react-to-print';
+import { useReactToPrint } from 'react-to-print'
 
 const Orders = ({url}) => {
 
